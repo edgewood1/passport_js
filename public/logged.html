@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>title</title>
+    </head>
+    <body>
+        <h3> logged <h3>
+                <button> <a href="/logout"> logout</a> </button>
+                <div id="message"></div>
+
+                <form>
+                    <input type="text" id="input" />
+                    <input type="submit" id="submit" />
+                </form>
+
+                <script
+                    src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+                    type="text/javascript"></script>
+                <script src="script.js"></script>
+
+                <script> 
+                $.get("/user", function(data) {
+                    $("#message").text("Welcome, " + data.username)
+                })
+
+                $("#submit").on("click", function(e) {
+                    e.preventDefault();
+                    var input = $("#input").val(); 
+                    console.log("input - ", input)
+                    var input = {input: input}
+                    $.post("/add", input, function(response) {
+                        console.log("saved .. ")
+                    })
+                })
+
+
+                </script>
+            </body>
+        </html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+  <body>
+    <form id="target">
+      <div>
+        <label for="username">username</label>
+        <input type="text" id="username">
+      </div>
+
+      <label for="password">password</label>
+      <input type="text" id="password">
+
+      <button id="register"> register </button>
+      <button id="login"> login</button>
+    </form>
+
+
+    <div>
+      <p id="msg"></p>
+    </div>
+    <script
+      src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+      type="text/javascript"></script>
+    <script src="script.js"></script>
+    <script>
+      $("#register").on("click", function(e) {
+        e.preventDefault();
+  
+        var data = {
+          username:$("#username").val().trim(),
+          password: $("#password").val().trim(),
+        }
+     
+        // $.post("/register", data, function(response) {
+     
+        //   if (typeof data.redirect == 'string')
+        //             window.location = data.redirect
+        // })
+ 
+        $.post("/register", data, function(data1) {
+          if (!data1.redirect) {
+          console.log(data1)
+          // if (data1.message) { 
+          // if (data1)
+          $("#msg").text(data1)
+          // } else if (typeof data1.redirect == 'string'){
+         
+                    // window.location = data1.redirect 
+                   
+          } else {
+                 window.location = data1.redirect 
+          }
+        })
+      })
+
+      $("#login").on("click", function(e) {
+        e.preventDefault();
+  
+        var data = {
+          username:$("#username").val().trim(),
+          password: $("#password").val().trim(),
+        }
+     console.log(data)
+        $.post("/login", data, function(data1) {
+          if (data1.message) { 
+          // if (data1)
+          $("#msg").text(data1)
+          } else if (typeof data1.redirect == 'string'){
+         
+                    window.location = data1.redirect
+                   
+          }
+        })
+      })
+     </script>
+  </body>
+</html>
