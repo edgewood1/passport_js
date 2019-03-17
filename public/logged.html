@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>title</title>
+        <style>table, th, tr, td { border: 1px black solid } </style>
     </head>
     <body>
         <h3> logged <h3>
@@ -14,27 +15,49 @@
                     <input type="submit" id="submit" />
                 </form>
 
+                <h3> History </h3>
+
+                <table>
+                    <tbody id="hola">
+                        <tr id="header">
+                            <th>one</th><th>two</th><th>three</th>
+                        </tr>
+
+                    </tbody>
+                </table>
+
                 <script
                     src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
                     type="text/javascript"></script>
-                <script src="script.js"></script>
+                <!-- <script src="./script.js"></script> -->
 
                 <script> 
-                $.get("/user", function(data) {
-                    $("#message").text("Welcome, " + data.username)
-                })
-
+                $( document ).ready(function() {
+                    getData()
+                    function getData() {
+                        $.get("/user", function(data) {
+                            $("#message").text("Welcome, " + data.username)
+                            var table = $('#hola' )
+                            table.find("tr:gt(0)").remove();
+                            
+                            data["data"].forEach( e => {
+                                var box = $("<td>")
+                                var row = $("<tr>");
+                                box.append(e);
+                                row.append(box);                  
+                                table.append(row)                  
+                            })                    
+                        })
+                    }
                 $("#submit").on("click", function(e) {
                     e.preventDefault();
-                    var input = $("#input").val(); 
-                    console.log("input - ", input)
+                    var input = $("#input").val();     
                     var input = {input: input}
                     $.post("/add", input, function(response) {
-                        console.log("saved .. ")
+                        getData()
                     })
                 })
-
-
+            });
                 </script>
             </body>
         </html>
